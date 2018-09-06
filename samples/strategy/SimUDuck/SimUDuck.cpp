@@ -27,6 +27,7 @@ function<void()> GetMuteQuackBehavior()
 {
 	return [] {};
 }
+	
 function<void()> GetWaltzDanceBehavior()
 {
 	return [] {
