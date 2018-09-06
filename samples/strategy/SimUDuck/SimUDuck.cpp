@@ -15,11 +15,11 @@ class FlyWithWings : public IFlyBehavior
 public:
 	void Fly() override
 	{
-		cout << "I'm flying with wings!! [" << ++flightsCount << "]" << endl;
+		cout << "I'm flying with wings!! [" << ++m_flightsCount << "]" << endl;
 	}
 
-public:
-	uint64_t flightsCount;
+private:
+	uint64_t m_flightsCount = 0;
 };
 class FlyNoWay : public IFlyBehavior
 {
