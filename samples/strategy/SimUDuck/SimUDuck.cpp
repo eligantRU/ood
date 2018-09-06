@@ -64,7 +64,7 @@ class WaltzDanceBehavior : public IDanceBehavior
 public:
 	void Dance() override
 	{
-		cout << ">> I'm dancing waltz" << endl;
+		cout << "I'm dancing waltz" << endl;
 	}
 };
 class MinuetDanceBehavior : public IDanceBehavior
