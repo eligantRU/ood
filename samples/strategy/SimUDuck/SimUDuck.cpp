@@ -71,8 +71,6 @@ public:
 		: m_quackBehaviorFn(move(quackBehaviorFn))
 		, m_danceBehaviorFn(move(danceBehaviorFn))
 	{
-		assert(m_quackBehaviorFn);
-		assert(m_danceBehaviorFn);
 		SetFlyBehavior(move(flyBehaviorFn));
 	}
 	void Quack() const
