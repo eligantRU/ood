@@ -15,10 +15,12 @@ class FlyWithWings : public IFlyBehavior
 public:
 	void Fly() override
 	{
-		cout << "I'm flying with wings!!" << endl;
+		cout << "I'm flying with wings!! [" << ++flightsCount << "]" << endl;
 	}
-};
 
+public:
+	uint64_t flightsCount;
+};
 class FlyNoWay : public IFlyBehavior
 {
 public:
@@ -30,7 +32,6 @@ struct IQuackBehavior
 	virtual ~IQuackBehavior(){};
 	virtual void Quack() = 0;
 };
-
 class QuackBehavior : public IQuackBehavior
 {
 public:
@@ -47,7 +48,6 @@ public:
 		cout << "Squeek!!!" << endl;
 	}
 };
-
 class MuteQuackBehavior : public IQuackBehavior
 {
 public:
@@ -75,7 +75,6 @@ public:
 		cout << "I'm dancing minuet" << endl;
 	}
 };
-
 class NoDanceBehavior : public IDanceBehavior
 {
 public:
@@ -218,6 +217,9 @@ void main()
 	PlayWithDuck(decoyDuck);
 
 	ModelDuck modelDuck;
+	PlayWithDuck(modelDuck);
+	modelDuck.SetFlyBehavior(make_unique<FlyWithWings>());
+	PlayWithDuck(modelDuck);
 	PlayWithDuck(modelDuck);
 	modelDuck.SetFlyBehavior(make_unique<FlyWithWings>());
 	PlayWithDuck(modelDuck);
