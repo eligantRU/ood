@@ -252,4 +252,27 @@ int main()
 		// Выписываем счет покупателю
 		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
 	}
+
+		{
+		auto beverage = make_unique<CDoubleLatte>()
+			<< MakeCondiment<CCinnamon>()
+			<< MakeCondiment<CLemon>(2);
+
+		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
+	}
+
+	{
+		auto beverage = make_unique<CLargeMilkshake>()
+			<< MakeCondiment<CSyrup>(SyrupType::Maple)
+			<< MakeCondiment<CCoconutFlakes>(2);
+
+		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
+	}
+
+	{
+		auto beverage = make_unique<CRedTea>()
+			<< MakeCondiment<CSyrup>(SyrupType::Maple);
+
+		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
+	}
 }

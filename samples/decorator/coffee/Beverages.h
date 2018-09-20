@@ -6,14 +6,16 @@
 class CBeverage : public IBeverage
 {
 public:
-	CBeverage(const std::string & description)
-		:m_description(description)
-	{}
+	CBeverage(const std::string& description)
+		: m_description(description)
+	{
+	}
 
-	std::string GetDescription()const override final
+	std::string GetDescription() const override final
 	{
 		return m_description;
 	}
+
 private:
 	std::string m_description;
 };
@@ -23,12 +25,13 @@ class CCoffee : public CBeverage
 {
 public:
 	CCoffee(const std::string& description = "Coffee")
-		:CBeverage(description) 
-	{}
-
-	double GetCost() const override 
+		: CBeverage(description)
 	{
-		return 60; 
+	}
+
+	double GetCost() const override
+	{
+		return 60;
 	}
 };
 
@@ -36,13 +39,28 @@ public:
 class CCapuccino : public CCoffee
 {
 public:
-	CCapuccino() 
-		:CCoffee("Capuccino") 
-	{}
-
-	double GetCost() const override 
+	CCapuccino()
+		: CCoffee("Capuccino")
 	{
-		return 80; 
+	}
+
+	double GetCost() const override
+	{
+		return 80;
+	}
+};
+
+class CDoubleCapuccino : public CCoffee
+{
+public:
+	CDoubleCapuccino()
+		: CCoffee("Double capuccino")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 120;
 	}
 };
 
@@ -50,13 +68,28 @@ public:
 class CLatte : public CCoffee
 {
 public:
-	CLatte() 
-		:CCoffee("Latte") 
-	{}
-
-	double GetCost() const override 
+	CLatte()
+		: CCoffee("Latte")
 	{
-		return 90; 
+	}
+
+	double GetCost() const override
+	{
+		return 90;
+	}
+};
+
+class CDoubleLatte : public CCoffee
+{
+public:
+	CDoubleLatte()
+		: CCoffee("Double latte")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 130;
 	}
 };
 
@@ -64,13 +97,70 @@ public:
 class CTea : public CBeverage
 {
 public:
-	CTea() 
-		:CBeverage("Tea") 
-	{}
-
-	double GetCost() const override 
+	CTea(const std::string& description = "Tea")
+		: CBeverage(description)
 	{
-		return 30; 
+	}
+
+	double GetCost() const override
+	{
+		return 30;
+	}
+};
+
+class CRedTea : public CTea
+{
+public:
+	CRedTea()
+		: CTea("Red tea")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 30;
+	}
+};
+
+class CGreenTea : public CTea
+{
+public:
+	CGreenTea()
+		: CTea("Green tea")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 30;
+	}
+};
+
+class CBlackTea : public CTea
+{
+public:
+	CBlackTea()
+		: CTea("Black tea")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 30;
+	}
+};
+
+class CYellowTea : public CTea
+{
+public:
+	CYellowTea()
+		: CTea("Yellow tea")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 30;
 	}
 };
 
@@ -78,12 +168,55 @@ public:
 class CMilkshake : public CBeverage
 {
 public:
-	CMilkshake() 
-		:CBeverage("Milkshake") 
-	{}
+	CMilkshake(const std::string& description = "Milkshake")
+		: CBeverage(description)
+	{
+	}
 
-	double GetCost() const override 
-	{ 
-		return 80; 
+	double GetCost() const override
+	{
+		return 80;
+	}
+};
+
+class CSmallMilkshake : public CMilkshake
+{
+public:
+	CSmallMilkshake()
+		: CMilkshake("Small milkshake")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 50;
+	}
+};
+
+class CMediumMilkshake : public CMilkshake
+{
+public:
+	CMediumMilkshake()
+		: CMilkshake("Medium milkshake")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 60;
+	}
+};
+
+class CLargeMilkshake : public CMilkshake
+{
+public:
+	CLargeMilkshake()
+		: CMilkshake("Large milkshake")
+	{
+	}
+
+	double GetCost() const override
+	{
+		return 80;
 	}
 };
