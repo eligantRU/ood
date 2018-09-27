@@ -23,8 +23,8 @@ public:
 
 	void AddValue(double value)
 	{
-		m_minValue = std::min(m_minValue, value);
-		m_maxValue = std::max(m_maxValue, value);
+		m_minValue = min(m_minValue, value);
+		m_maxValue = max(m_maxValue, value);
 
 		m_accValue += value;
 		++m_countAcc;
@@ -36,8 +36,8 @@ public:
 	}
 
 private:
-	double m_minValue = std::numeric_limits<double>::infinity();
-	double m_maxValue = -std::numeric_limits<double>::infinity();
+	double m_minValue = numeric_limits<double>::infinity();
+	double m_maxValue = -numeric_limits<double>::infinity();
 	double m_accValue = 0;
 	unsigned m_countAcc = 0;
 };
@@ -86,9 +86,9 @@ private:
 		m_humidityStat.AddValue(data.humidity);
 		m_pressureStat.AddValue(data.pressure);
 
-		PrintStats(std::cout, m_tempStat, "Temp");
-		PrintStats(std::cout, m_humidityStat, "Humidity");
-		PrintStats(std::cout, m_pressureStat, "Pressure");
+		PrintStats(cout, m_tempStat, "Temp");
+		PrintStats(cout, m_humidityStat, "Humidity");
+		PrintStats(cout, m_pressureStat, "Pressure");
 	}
 
 	CStats m_tempStat;
