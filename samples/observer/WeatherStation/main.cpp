@@ -1,7 +1,37 @@
 #include "WeatherData.h"
 
+class CSelfDestroyer : public CDisplay
+{
+public:
+	CSelfDestroyer(CWeatherData& weatherData)
+		: m_weatherData(weatherData)
+	{}
+
+	void Update(const SWeatherInfo& data) override
+	{
+		m_weatherData.RemoveObserver(*this);
+	}
+
+private:
+	CWeatherData & m_weatherData;
+};
+
+void TestSafeNotification()
+{
+	CWeatherData wd;
+	CSelfDestroyer observer(wd);
+
+	CDisplay display;
+	
+	wd.RegisterObserver(observer);
+	
+	wd.SetMeasurements(3, 0.7, 760);
+}
+
 int main()
 {
+	TestSafeNotification();
+
 	CWeatherData wd;
 
 	CDisplay display;
