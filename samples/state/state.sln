@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gumball_machine", "gumball_machine\gumball_machine.vcxproj", "{10249F42-5FAF-4FF6-9229-C1201F1E5341}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gumball_machine_tests", "gumball_machine_tests\gumball_machine_tests.vcxproj", "{D5C3FD44-5933-41C5-8557-4AE0E10024E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,19 @@ Global
 		{10249F42-5FAF-4FF6-9229-C1201F1E5341}.Release|x64.Build.0 = Release|x64
 		{10249F42-5FAF-4FF6-9229-C1201F1E5341}.Release|x86.ActiveCfg = Release|Win32
 		{10249F42-5FAF-4FF6-9229-C1201F1E5341}.Release|x86.Build.0 = Release|Win32
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Debug|x64.ActiveCfg = Debug|x64
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Debug|x64.Build.0 = Debug|x64
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Debug|x86.ActiveCfg = Debug|Win32
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Debug|x86.Build.0 = Debug|Win32
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Release|x64.ActiveCfg = Release|x64
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Release|x64.Build.0 = Release|x64
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Release|x86.ActiveCfg = Release|Win32
+		{D5C3FD44-5933-41C5-8557-4AE0E10024E2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71EE919E-727B-4011-A189-5F95DD184AD7}
 	EndGlobalSection
 EndGlobal

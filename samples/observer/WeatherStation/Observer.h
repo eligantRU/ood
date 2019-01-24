@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <set>
+#include <map>
 #include <functional>
 
 /*
@@ -26,7 +27,7 @@ class IObservable
 {
 public:
 	virtual ~IObservable() = default;
-	virtual void RegisterObserver(IObserver<T> & observer) = 0;
+	virtual void RegisterObserver(IObserver<T> & observer, size_t priority) = 0;
 	virtual void NotifyObservers() = 0;
 	virtual void RemoveObserver(IObserver<T> & observer) = 0;
 };
@@ -38,24 +39,34 @@ class CObservable : public IObservable<T>
 public:
 	typedef IObserver<T> ObserverType;
 
-	void RegisterObserver(ObserverType & observer) override
+	void RegisterObserver(ObserverType & observer, size_t priority = 0) override
 	{
-		m_observers.insert(&observer);
+		m_observers[priority].insert(&observer);
+		m_priorities[&observer] = priority;
 	}
 
 	void NotifyObservers() override
 	{
 		T data = GetChangedData();
 		auto clone(m_observers);
-		for (auto & observer : clone)
+		for (auto & [priority, observers] : clone)
 		{
-			observer->Update(data);
+			for (auto & observer : observers)
+			{
+				observer->Update(data);
+			}
 		}
 	}
 
 	void RemoveObserver(ObserverType & observer) override
 	{
-		m_observers.erase(&observer);
+		auto priority = m_priorities[&observer];
+		m_observers[priority].erase(&observer);
+		if (m_observers[priority].empty())
+		{
+			m_observers.erase(priority);
+		}
+		m_priorities.erase(m_priorities.find(&observer));
 	}
 
 protected:
@@ -64,5 +75,6 @@ protected:
 	virtual T GetChangedData()const = 0;
 
 private:
-	std::set<ObserverType *> m_observers;
+	std::map<size_t, std::set<ObserverType *>> m_observers;
+	std::map<ObserverType*, size_t> m_priorities;
 };

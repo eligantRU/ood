@@ -16,6 +16,22 @@ private:
 	CWeatherData & m_weatherData;
 };
 
+class CMockDisplay : public IObserver<SWeatherInfo>
+{
+public:
+	CMockDisplay(string id)
+		: m_id(id)
+	{}
+
+private:
+	void Update(SWeatherInfo const& data) override
+	{
+		cout << m_id << endl;
+	}
+
+	string m_id;
+};
+
 void TestSafeNotification()
 {
 	CWeatherData wd;
@@ -28,11 +44,33 @@ void TestSafeNotification()
 	wd.SetMeasurements(3, 0.7, 760);
 }
 
+void TestPrioritedNotifications()
+{
+	CWeatherData wd;
+
+	CMockDisplay display1("display1");
+	wd.RegisterObserver(display1, 2);
+
+	CMockDisplay display2("display2");
+	wd.RegisterObserver(display2);
+
+	CMockDisplay display3("display3");
+	wd.RegisterObserver(display3, 1);
+
+	wd.SetMeasurements(3, 0.7, 760);
+
+	wd.RemoveObserver(display2);
+
+	wd.SetMeasurements(10, 0.8, 761);
+}
+
 int main()
 {
-	TestSafeNotification();
+	//TestSafeNotification();
 
-	CWeatherData wd;
+	TestPrioritedNotifications();
+
+	/*CWeatherData wd;
 
 	CDisplay display;
 	wd.RegisterObserver(display);
@@ -46,6 +84,6 @@ int main()
 	wd.RemoveObserver(statsDisplay);
 
 	wd.SetMeasurements(10, 0.8, 761);
-	wd.SetMeasurements(-10, 0.8, 761);
+	wd.SetMeasurements(-10, 0.8, 761);*/
 	return 0;
 }
