@@ -33,13 +33,13 @@ class FileOutputStream(IOutputStream):
 
 
 class MemoryOutputStream:
-    _data = None
+    _data = bytes()
 
-    def __init__(self, data):
-        self._data = data
+    def __init__(self):
+        pass
 
     def write_byte(self, byte):
-        self._data.append(byte)
+        self._data += byte
 
     def flush(self):
         pass

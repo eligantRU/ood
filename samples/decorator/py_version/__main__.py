@@ -5,78 +5,76 @@ from include.input_stream import *
 from sys import argv
 
 
-def main():
-    res2 = []
-    with MemoryInputStream(bytes(bytes([1]) + b"A" + bytes([2]) + b"B" + bytes([1]) + b"C")) as input_stream,\
-            MemoryOutputStream(res2) as output_stream:
-        input_stream = CompressedMemoryInputStream(input_stream)
-        res = []
+def test_memory_streams():
+    with MemoryInputStream(bytes([0x01, 0x27, 0x02, 0x1F])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = CompressedInputStream(input_stream)
         while not input_stream.is_eof():
-            res.append(input_stream.read_byte())
-        print("".join(map(chr, res)))
-        output_stream = CompressedMemoryOutputStream(output_stream)
-        for byte in bytearray(res):
-            output_stream.write_byte(byte)
+            output_stream.write_byte(input_stream.read_byte())
         output_stream.flush()
-        print(res2)
-    print()
+        assert(output_stream._data == bytes([0x27, 0x1F, 0x1F]))
 
-    with FileInputStream("1.txt") as input_stream, FileOutputStream("2.txt") as output_stream:
-        input_stream = CompressedFileInputStream(input_stream)
-        output_stream = CompressedFileOutputStream(output_stream)
-        res = []
+    with MemoryInputStream(bytes([0x01, 0x27, 0x02, 0x1F])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = CompressedInputStream(input_stream)
+        output_stream = CompressedOutputStream(output_stream)
         while not input_stream.is_eof():
-            byte = input_stream.read_byte()
-            res.append(byte)
-        print(res)
-
-        for byte in res:
-            output_stream.write_byte(byte)
+            output_stream.write_byte(input_stream.read_byte())
         output_stream.flush()
-    print()
+        assert(output_stream._strm._data == bytes([0x01, 0x27, 0x02, 0x1F]))
 
-    # res2 = []
-    # with MemoryInputStream(bytes(bytes([190, 189, 189, 188]))) as input_stream,\
-    #         MemoryOutputStream(res2) as output_stream:
-    #     input_stream = EncryptedMemoryInputStream(input_stream, key=0xFF)
-    #     output_stream = EncryptedMemoryOutputStream(output_stream, key=0xFF)
-    #     res = []
-    #     while not input_stream.is_eof():
-    #          res.append(input_stream.read_byte())
-    #     print("".join(map(chr, res)))
-    #     for byte in bytearray(res):
-    #         output_stream.write_byte(byte)
-    #     output_stream.flush()
-    #     print(res2)
+    with MemoryInputStream(bytes([0x27, 0x1F, 0x1F, 0xFF])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = EncryptedInputStream(input_stream, 0xFF)
+        while not input_stream.is_eof():
+            output_stream.write_byte(input_stream.read_byte())
+        output_stream.flush()
+        assert(output_stream._data == bytes([0xD8, 0xE0, 0xE0, 0x00]))
+
+    with MemoryInputStream(bytes([0x27, 0x1F, 0x1F, 0xFF])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = EncryptedInputStream(input_stream, 0x83)
+        while not input_stream.is_eof():
+            output_stream.write_byte(input_stream.read_byte())
+        output_stream.flush()
+        assert(output_stream._data == bytes([0xA4, 0x9C, 0x9C, 0x7C]))
+
+    with MemoryInputStream(bytes([0x01, 0x27, 0x02, 0x1F])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = CompressedInputStream(input_stream)
+        input_stream = EncryptedInputStream(input_stream, 0xFF)
+        output_stream = CompressedOutputStream(output_stream)
+        while not input_stream.is_eof():
+            output_stream.write_byte(input_stream.read_byte())
+        output_stream.flush()
+        assert(output_stream._strm._data == bytes([0x01, 0xD8, 0x02, 0xE0]))
 
 
-if __name__ == "__main__":
-    # main()
+def main(argv):
+    test_memory_streams()
 
-    # python __main__.py --decompress 1.txt 2.txt   ->    python __main__.py --encrypt 30 --decrypt 30  2.txt 3.txt
-    #
-
-    with FileInputStream(argv[-2]) as inp, FileOutputStream(argv[-1]) as out:
+    with FileInpfutStream(argv[-2]) as inp, FileOutputStream(argv[-1]) as out:
         argv = argv[1:-2]
 
         i = 0
         while i < len(argv):
             if argv[i] == "--encrypt":
                 i += 1
-                out = EncryptedFileOutputStream(out, int(argv[i]))
+                out = EncryptedOutputStream(out, int(argv[i]))
             elif argv[i] == "--compress":
-                out = CompressedFileOutputStream(out)
+                out = CompressedOutputStream(out)
             elif argv[i] == "--decrypt":
                 i += 1
-                inp = EncryptedFileInputStream(inp, int(argv[i]))
+                inp = EncryptedInputStream(inp, int(argv[i]))
             elif argv[i] == "--decompress":
-                inp = CompressedFileInputStream(inp)
+                inp = CompressedInputStream(inp)
             else:
                 print("Unknown argument: ", argv[i])
             i += 1
 
         while not inp.is_eof():
-            bla = inp.read_byte()
-            print(bla)
-            out.write_byte(bla)
+            out.write_byte(inp.read_byte())
         out.flush()
+
+    # python __main__.py --decompress 1.txt out.txt
+    # python __main__.py --encrypt 255 --compress 4.txt out.txt -> python __main__.py --decrypt 255 --decompress out.txt out2.txt
+    # python __main__.py --encrypt 144 --encrypt 255 --compress 4.txt out.txt -> python __main__.py --decrypt 144 --decrypt 255 --decompress out.txt out2.txt
+
+
+if __name__ == "__main__":
+    main(argv)

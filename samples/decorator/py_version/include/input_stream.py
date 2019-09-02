@@ -49,7 +49,7 @@ class MemoryInputStream(IInputStream):
     def read_byte(self):
         byte = self._data[self._caret_pos]
         self._caret_pos += 1
-        return byte
+        return bytes(bytes([byte]))
 
     def __enter__(self):
         return self
