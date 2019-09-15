@@ -1,21 +1,21 @@
 #include "stdafx.h"
 
-#include "../gumball_machine/GumBallMachineWithState.h"
+#include "../gumball_machine/NaiveGumBallMachine.h"
 
 #include <boost/format.hpp>
 #include <boost/test/tools/output_test_stream.hpp>
 
-struct GumballMachineWithState
+struct NaiveGumballMachine
 {
-	GumballMachineWithState()
+	NaiveGumballMachine()
 		: m(2)
 	{
 	}
 	boost::test_tools::output_test_stream strm;
-	with_state::CGumballMachine m;
+	naive::CGumballMachine m;
 };
 
-BOOST_FIXTURE_TEST_SUITE(Gumball_machine_with_state, GumballMachineWithState)
+BOOST_FIXTURE_TEST_SUITE(Naive_gumball_machine, NaiveGumballMachine)
 
 	BOOST_AUTO_TEST_CASE(has_correct_state_after_creation)
 	{
@@ -95,7 +95,7 @@ Money: 0
 
 		m.InsertQuarter();
 		strm.clear();
-		
+
 		strm << m.ToString();
 		BOOST_CHECK(strm.is_equal(R"(
 Inventory: 0 gumballs

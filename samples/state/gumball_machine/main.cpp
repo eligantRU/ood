@@ -30,11 +30,15 @@ void TestGumballMachine(GumballMachineType & m)
 
 	m.InsertQuarter();
 	m.InsertQuarter();
-	m.TurnCrank();
 	m.InsertQuarter();
 	m.TurnCrank();
 	m.InsertQuarter();
 	m.TurnCrank();
+
+	cout << m.ToString() << endl;
+	
+	m.EjectQuarter();
+	m.EjectQuarter();
 
 	cout << m.ToString() << endl;
 }
@@ -62,6 +66,7 @@ int main()
 	TestNaiveGumballMachine();
 
 	cout << "\n-----------------\n";
+	
 	TestGumballMachineWithState();
 
 	cout << "\n-----------------\n";
