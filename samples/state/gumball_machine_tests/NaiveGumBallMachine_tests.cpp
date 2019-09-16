@@ -198,4 +198,30 @@ Machine is sold out
 Money: 0
 )"));
 	}
+
+	BOOST_AUTO_TEST_CASE(can_eject_quarters_if_no_gumballs_2)
+	{
+		m.InsertQuarter();
+		m.InsertQuarter();
+		m.TurnCrank();
+		m.EjectQuarter();
+
+		strm << m.ToString();
+		BOOST_CHECK(strm.is_equal(R"(
+Inventory: 1 gumball
+Machine is waiting for quarter
+Money: 0
+)"));
+
+		strm.clear();
+
+		m.TurnCrank();
+		strm << m.ToString();
+		BOOST_CHECK(strm.is_equal(R"(
+Inventory: 1 gumball
+Machine is waiting for quarter
+Money: 0
+)"));
+	}
+
 BOOST_AUTO_TEST_SUITE_END()
