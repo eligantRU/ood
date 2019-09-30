@@ -107,7 +107,7 @@ public:
 	void Refill(unsigned numBalls)
 	{
 		m_count = numBalls;
-		m_state = numBalls > 0 ? State::NoQuarter : State::SoldOut;
+		m_state = numBalls > 0 ? (m_money ? State::HasQuarter : State::NoQuarter) : State::SoldOut;
 	}
 
 	std::string ToString() const

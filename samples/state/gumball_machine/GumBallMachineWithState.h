@@ -19,6 +19,8 @@ struct IState
 
 struct IGumballMachine
 {
+	virtual void Refill(unsigned numBalls) = 0;
+
 	virtual unsigned GetMoneyCount() const = 0;
 	virtual void ReleaseMoney() = 0;
 	virtual void IncreaseMoneyCount() = 0;
@@ -225,6 +227,16 @@ public:
 	{
 		m_state->TurnCrank();
 		m_state->Dispense();
+	}
+	void Refill(unsigned numBalls)
+	{
+		m_count = numBalls;
+		(numBalls) 
+			? (m_money 
+				? SetHasQuarterState() 
+				: SetNoQuarterState()
+			) 
+			: SetSoldOutState();
 	}
 	std::string ToString() const
 	{
