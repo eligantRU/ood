@@ -44,11 +44,33 @@ def test_memory_streams():
         output_stream.flush()
         assert(output_stream._strm._data == bytes([0x01, 0xD8, 0x02, 0xE0]))
 
+    with MemoryInputStream(bytes([0x00 for i in range(0, 666)])) as input_stream, MemoryOutputStream() as output_stream:
+        output_stream = CompressedOutputStream(output_stream)
+        while not input_stream.is_eof():
+            output_stream.write_byte(input_stream.read_byte())
+        output_stream.flush()
+        assert(output_stream._strm._data == bytes([0xFF, 0x00, 0xFF, 0x00, 0x9C, 0x00]))
+
+    with MemoryInputStream(bytes([0xFF, 0x00, 0xFF, 0x00, 0x9C, 0x00])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = CompressedInputStream(input_stream)
+        while not input_stream.is_eof():
+            output_stream.write_byte(input_stream.read_byte())
+        output_stream.flush()
+        assert(output_stream._data == bytes([0x00 for i in range(0, 666)]))
+
+    with MemoryInputStream(bytes([0xFF, 0x00, 0xFF, 0x00, 0x9C, 0x00])) as input_stream, MemoryOutputStream() as output_stream:
+        input_stream = CompressedInputStream(input_stream)
+        output_stream = CompressedOutputStream(output_stream)
+        while not input_stream.is_eof():
+            output_stream.write_byte(input_stream.read_byte())
+        output_stream.flush()
+        assert(output_stream._strm._data == bytes([0xFF, 0x00, 0xFF, 0x00, 0x9C, 0x00]))
+
 
 def main(argv):
     test_memory_streams()
-
-    with FileInpfutStream(argv[-2]) as inp, FileOutputStream(argv[-1]) as out:
+    return
+    with FileInputStream(argv[-2]) as inp, FileOutputStream(argv[-1]) as out:
         argv = argv[1:-2]
 
         i = 0

@@ -39,15 +39,19 @@ class CompressedOutputStream(IOutputStream):
 
         if byte == self._last:
             self._counter += 1
+            if self._counter == 255:
+                self._write_impl(255, self._last)
         else:
-            self._strm.write_byte(bytes([self._counter + 1]))
-            self._strm.write_byte(self._last)
+            self._write_impl(self._counter + 1, self._last)
             self._last = byte
-            self._counter = 0
 
     def flush(self):
-        self._strm.write_byte(bytes([self._counter + 1]))
-        self._strm.write_byte(self._last)
+        self._write_impl(self._counter + 1, self._last)
+
+    def _write_impl(self, counter, last):
+        self._strm.write_byte(bytes([counter]))
+        self._strm.write_byte(last)
+        self._counter = 0
 
 
 __all__ = [name.__name__ for name in [CompressedInputStream, CompressedOutputStream]]

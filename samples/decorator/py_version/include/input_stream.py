@@ -44,7 +44,7 @@ class MemoryInputStream(IInputStream):
         self._caret_pos = 0
 
     def is_eof(self):
-        return self._caret_pos is len(self._data)
+        return self._caret_pos == len(self._data)
 
     def read_byte(self):
         byte = self._data[self._caret_pos]
