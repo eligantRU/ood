@@ -81,12 +81,16 @@ class TestPainter(TestCase):
 			LoggingEllipse(Color.GREEN, (3, 14), 15, 92),
 			LoggingRegularPolygon(Color.YELLOW, (65, 35), 89, 79)
 		]), _MockCanvas())
-
-		self.assertListEqual([value[0] for value in list(filter(lambda value: value[1].startswith("draw"), g_log))], [
-			LoggingTriangle,
-			LoggingRectangle,
-			LoggingEllipse,
-			LoggingRegularPolygon,
+		# TODO: Bad order
+		self.assertListEqual(g_log, [
+			(LoggingTriangle, "draw"),
+			(LoggingTriangle, "color"),
+			(LoggingRectangle, "draw"),
+			(LoggingRectangle, "color"),
+			(LoggingEllipse, "draw"),
+			(LoggingEllipse, "color"),
+			(LoggingRegularPolygon, "draw"),
+			(LoggingRegularPolygon, "color"),
 		])
 
 

@@ -1,4 +1,5 @@
 from include.Shapes import Rectangle, Triangle, Ellipse, RegularPolygon
+from include.ShapeFactory import ShapeFactory
 from include.Designer import Designer
 from unittest import TestCase, main
 from include.Color import Color
@@ -71,10 +72,10 @@ class _MockFileInput(FileInput):
 
 class TestDesigner(TestCase):
 	def test_return_empty_draft_if_there_r_no_shapes_in_input(self):
-		self.assertListEqual(Designer().create_draft(_MockFileInput([])).shapes(), [])
+		self.assertListEqual(Designer(ShapeFactory()).create_draft(_MockFileInput([])).shapes(), [])
 
 	def test_return_nonempty_draft_if_there_r_shapes_in_input(self):
-		shapes = Designer().create_draft(_MockFileInput([
+		shapes = Designer(ShapeFactory()).create_draft(_MockFileInput([
 			"rectangle red 100 500 500 100",
 			"rectangle black 250 400 350 200",
 			"triangle blue 500 500 100 400 300 100",
@@ -97,7 +98,7 @@ class TestDesigner(TestCase):
 		])
 
 	def test_forgive_mistakes_in_input(self):
-		shapes = Designer().create_draft(_MockFileInput([
+		shapes = Designer(ShapeFactory()).create_draft(_MockFileInput([
 			"rerctangle red 100 500 500 100",
 			"rectangle reda 100 500 500 100",
 			"rectangle red abc 500 500 100",

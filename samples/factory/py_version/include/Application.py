@@ -1,3 +1,4 @@
+from include.ShapeFactory import ShapeFactory
 from include.Designer import Designer
 from include.Painter import Painter
 from include.Client import Client
@@ -12,7 +13,7 @@ class Application:
     def __init__(self):
         self.__client = Client()
         self.__painter = Painter()
-        self.__designer = Designer()
+        self.__designer = Designer(ShapeFactory())
 
     def run(self) -> None:
         draft = self.__designer.create_draft(input())
