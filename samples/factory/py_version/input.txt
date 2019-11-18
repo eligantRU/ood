@@ -1,0 +1,8 @@
+rectangle red 100 500 500 100
+rectangle black 250 400 350 200
+triangle blue 500 500 100 400 300 100
+triangle black 100 100 300 500 500 100
+ellipse pink 350 350 50 100
+ellipse blue 300 300 200 200
+regular_polygon green 300 300 200 4
+regular_polygon yellow 300 300 200 8
