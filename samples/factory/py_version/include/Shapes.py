@@ -35,6 +35,7 @@ class Rectangle(Shape):
 		self.__left_top, self.__right_bottom = left_top, right_bottom
 
 	def draw(self, canvas: ICanvas) -> None:
+		canvas.set_color(self.color())
 		canvas.draw_line(self.__left_top, (self.__right_bottom[0], self.__left_top[1]))
 		canvas.draw_line((self.__right_bottom[0], self.__left_top[1]), self.__right_bottom)
 		canvas.draw_line(self.__right_bottom, (self.__left_top[0], self.__right_bottom[1]))
@@ -62,6 +63,7 @@ class Triangle(Shape):
 		self.__vertex1, self.__vertex2, self.__vertex3 = vertex1, vertex2, vertex3
 
 	def draw(self, canvas: ICanvas) -> None:
+		canvas.set_color(self.color())
 		canvas.draw_line(self.__vertex1, self.__vertex2)
 		canvas.draw_line(self.__vertex2, self.__vertex3)
 		canvas.draw_line(self.__vertex3, self.__vertex1)
@@ -97,6 +99,7 @@ class Ellipse(Shape):
 		self.__horizontal_radius, self.__vertical_radius = horizontal_radius, vertical_radius
 
 	def draw(self, canvas: ICanvas) -> None:
+		canvas.set_color(self.color())
 		canvas.draw_ellipse(self.__center, (self.__horizontal_radius, self.__vertical_radius))
 
 	def center(self) -> Vec2:
@@ -144,6 +147,7 @@ class RegularPolygon(Shape):
 			points.append((int(center_x + dx), int(center_y + dy)))
 		points.append(points[0])
 
+		canvas.set_color(self.color())
 		for i in range(0, len(points) - 1):
 			canvas.draw_line(points[i], points[i + 1])
 

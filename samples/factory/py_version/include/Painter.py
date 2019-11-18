@@ -31,5 +31,4 @@ class Painter(IPainter):
     @staticmethod
     def _draw_picture_impl(draft: PictureDraft, canvas: ICanvas) -> None:
         for shape in draft.shapes():
-            canvas.set_color(shape.color())
             shape.draw(canvas)
