@@ -6,53 +6,20 @@ from include.Painter import Painter
 from include.Color import Color
 
 
-def log_all_methods(log):
-	def with_logging(cls, func, log_):
-		def wrapper(*args, **kwargs):
-			log_.append((cls, func.__name__))
-			return func(*args, **kwargs)
-		return wrapper
-
-	def decorate(cls):
-		for method in [func for func in dir(cls) if callable(getattr(cls, func)) and not func.startswith("__")]:
-			if callable(getattr(cls, method)):
-				setattr(cls, method, with_logging(cls, getattr(cls, method), log))
-		return cls
-	return decorate
-
-
 class _MockCanvas(ICanvas):
+	__log = []
+
+	def __init__(self, log):
+		self.__log = log
+
 	def set_color(self, color):
-		pass
+		self.__log.append((self.set_color.__name__, color))
 
 	def draw_line(self, start_pos, end_pos):
-		pass
+		self.__log.append((self.draw_line.__name__, start_pos, end_pos))
 
 	def draw_ellipse(self, center, radius):
-		pass
-
-
-g_log = []
-
-
-@log_all_methods(g_log)
-class LoggingTriangle(Triangle):
-	pass
-
-
-@log_all_methods(g_log)
-class LoggingRectangle(Rectangle):
-	pass
-
-
-@log_all_methods(g_log)
-class LoggingEllipse(Ellipse):
-	pass
-
-
-@log_all_methods(g_log)
-class LoggingRegularPolygon(RegularPolygon):
-	pass
+		self.__log.append((self.draw_ellipse.__name__, center, radius))
 
 
 class _Painter(Painter):
@@ -61,36 +28,38 @@ class _Painter(Painter):
 
 
 class TestPainter(TestCase):
-	def setUp(self):
-		global g_log
-
-		g_log.clear()
-
 	def test_should_not_change_canvas_if_draft_is_empty(self):
-		global g_log
+		log = []
 
-		_Painter().draw_picture(PictureDraft([]), _MockCanvas())
-		self.assertListEqual(g_log, [])
+		_Painter().draw_picture(PictureDraft([]), _MockCanvas(log))
+		self.assertListEqual(log, [])
 
 	def test_should_paint_in_true_order(self):
-		global g_log
+		log = []
 
 		_Painter().draw_picture(PictureDraft([
-			LoggingTriangle(Color.RED, (0, 0), (1, 1), (2, 2)),
-			LoggingRectangle(Color.BLACK, (0, 1), (1, 0)),
-			LoggingEllipse(Color.GREEN, (3, 14), 15, 92),
-			LoggingRegularPolygon(Color.YELLOW, (65, 35), 89, 79)
-		]), _MockCanvas())
-		# TODO: Bad order
-		self.assertListEqual(g_log, [
-			(LoggingTriangle, "draw"),
-			(LoggingTriangle, "color"),
-			(LoggingRectangle, "draw"),
-			(LoggingRectangle, "color"),
-			(LoggingEllipse, "draw"),
-			(LoggingEllipse, "color"),
-			(LoggingRegularPolygon, "draw"),
-			(LoggingRegularPolygon, "color"),
+			Triangle(Color.RED, (0, 0), (1, 1), (2, 2)),
+			Rectangle(Color.BLACK, (0, 1), (1, 0)),
+			Ellipse(Color.GREEN, (3, 14), 15, 92),
+			RegularPolygon(Color.YELLOW, (65, 35), 5, 4)
+		]), _MockCanvas(log))
+		self.assertListEqual(log, [
+			('set_color', Color.RED),
+			('draw_line', (0, 0), (1, 1)),
+			('draw_line', (1, 1), (2, 2)),
+			('draw_line', (2, 2), (0, 0)),
+			('set_color', Color.BLACK),
+			('draw_line', (0, 1), (1, 1)),
+			('draw_line', (1, 1), (1, 0)),
+			('draw_line', (1, 0), (0, 0)),
+			('draw_line', (0, 0), (0, 1)),
+			('set_color', Color.GREEN),
+			('draw_ellipse', (3, 14), (15, 92)),
+			('set_color', Color.YELLOW),
+			('draw_line', (70, 35), (65, 40)),
+			('draw_line', (65, 40), (60, 35)),
+			('draw_line', (60, 35), (65, 30)),
+			('draw_line', (65, 30), (70, 35))
 		])
 
 

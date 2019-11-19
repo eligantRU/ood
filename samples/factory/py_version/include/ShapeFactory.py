@@ -2,12 +2,11 @@ from include.Shapes import Rectangle, Triangle, Ellipse, RegularPolygon
 from include.ShapeFactoryInterface import IShapeFactory
 from include.Color import str2color
 from include.Shapes import Shape
-from typing import Optional
 from typing import List
 
 
 class ShapeFactory(IShapeFactory):
-    def create_shape(self, line: str) -> Optional[Shape]:
+    def create_shape(self, line: str) -> Shape:
         args = line.split()
 
         if not args:
